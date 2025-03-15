@@ -4,9 +4,22 @@ import com.jpacourse.persistance.enums.Specialization;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "DOCTOR")
 public class DoctorEntity {
+
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER
+	)
+	@JoinColumn(name = "DOCTOR_ID")
+	private Collection<VisitEntity> visitEntities; //jednostronna od strony rodzica
+
+	@OneToOne
+	@JoinColumn(name = "ADDRESS_ID")
+	private AddressEntity addressEntity; //dwustronna
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

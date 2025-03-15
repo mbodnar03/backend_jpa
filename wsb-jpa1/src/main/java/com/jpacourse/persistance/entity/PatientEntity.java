@@ -1,12 +1,28 @@
 package com.jpacourse.persistance.entity;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "PATIENT")
 public class PatientEntity {
+
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER
+	)
+	@JoinColumn(name = "PATIENT_ID")
+	private Collection<VisitEntity> visitEntities; //jednostrona od strony rodzica
+
+	@OneToOne(
+			cascade =  CascadeType.ALL,
+			fetch = FetchType.LAZY,
+			optional = false
+	)
+	@JoinColumn(name = "ADDRESS_ID")
+	private AddressEntity addressEntity;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

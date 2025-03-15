@@ -1,12 +1,24 @@
 package com.jpacourse.persistance.entity;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 import jakarta.persistence.*;
+import org.hibernate.FetchMode;
+import org.hibernate.annotations.Fetch;
 
 @Entity
 @Table(name = "VISIT")
 public class VisitEntity {
+
+
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER
+	)
+	@JoinColumn(name = "VISIT_ID")
+	private Collection<MedicalTreatmentEntity> medicalTreatmentEntityCollection; //jednostronna od strony dziecka
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

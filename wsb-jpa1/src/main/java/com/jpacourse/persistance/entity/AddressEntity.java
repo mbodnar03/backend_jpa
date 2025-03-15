@@ -7,6 +7,11 @@ import jakarta.persistence.*;
 @Table(name = "ADDRESS")
 public class AddressEntity {
 
+	@OneToOne(mappedBy = "addressEntity")
+	private DoctorEntity doctorEntity; //dwustronna
+
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
