@@ -4,13 +4,13 @@ insert into address (id, address_line1, address_line2, city, postal_code)
             (3, 'parkowa', '3', 'opole', '12-345'),
             (4, 'iglasta', '11', 'opole', '12-345');
 
-insert into patient (date_of_birth, address_id, id, email, first_name, last_name, patient_number, telephone_number)
-            values ('2001-01-01', 1, 1, 'eustachy@enum.pl', 'eustachy', 'enum', '123123', '123456789'),
-            ('2002-02-02', 2, 2, 'tomek@domek.pl', 'tomasz', 'dom', '321321', '987654321');
+insert into patient (date_of_birth, id, email, first_name, last_name, patient_number, telephone_number, insured)
+            values ('2001-01-01', 1, 'eustachy@enum.pl', 'eustachy', 'enum', '123123', '123456789','false'),
+            ('2002-02-02', 2, 'tomek@domek.pl', 'tomasz', 'dom', '321321', '987654321','true');
 
-insert into doctor (address_id, id, doctor_number, email, first_name, last_name, telephone_number, specialization)
-            values (3, 1, '111', 'kacper@kapusta.pl', 'kacper', 'kapusta', '111111111', 'SURGEON'),
-            (4, 2, '222', 'grzegorz@plecy.pl', 'grzegorz', 'plecy', '222222222', 'DERMATOLOGIST');
+insert into doctor (id, doctor_number, email, first_name, last_name, telephone_number, specialization)
+            values (1, '111', 'kacper@kapusta.pl', 'kacper', 'kapusta', '111111111', 'SURGEON'),
+            (2, '222', 'grzegorz@plecy.pl', 'grzegorz', 'plecy', '222222222', 'DERMATOLOGIST');
 
 insert into visit (doctor_id, id, patient_id, time, description)
             values(1, 1, 1, '2025-03-20 11:00:00', 'wizyta kontrolna'),
@@ -25,3 +25,11 @@ insert into medical_treatment (id, visit_id, description, type)
             (3, 3, 'zdjecia brzucha', 'RTG'),
             (4, 4, 'kontrola twarzy', 'USG'),
             (5, 5, 'kontrola twarzy', 'USG');
+
+insert into patient_to_address (address_id, patient_id)
+            values (1,1),
+            (1,2);
+
+insert into doctor_to_address (address_id, doctor_id)
+            values (1,1),
+            (4,2);

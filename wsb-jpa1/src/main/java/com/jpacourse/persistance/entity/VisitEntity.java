@@ -7,10 +7,19 @@ import jakarta.persistence.*;
 import org.hibernate.FetchMode;
 import org.hibernate.annotations.Fetch;
 
+import javax.print.Doc;
+
 @Entity
 @Table(name = "VISIT")
 public class VisitEntity {
 
+	@ManyToOne
+	@JoinColumn(name = "doctor_id")
+	private DoctorEntity doctor;
+
+	@ManyToOne
+	@JoinColumn(name = "patient_id")
+	private PatientEntity patient;
 
 	@OneToMany(
 			cascade = CascadeType.ALL,

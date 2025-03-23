@@ -10,16 +10,17 @@ import java.util.Collection;
 @Table(name = "DOCTOR")
 public class DoctorEntity {
 
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			fetch = FetchType.EAGER
-	)
-	@JoinColumn(name = "DOCTOR_ID")
-	private Collection<VisitEntity> visitEntities; //jednostronna od strony rodzica
+	@OneToMany(mappedBy = "doctor")
+	private Collection<VisitEntity> visitEntities;
 
-	@OneToOne
-	@JoinColumn(name = "ADDRESS_ID")
-	private AddressEntity addressEntity; //dwustronna
+	@ManyToMany
+	@JoinTable(
+			name = "DOCTOR_TO_ADDRESS",
+			joinColumns = @JoinColumn(name = "DOCTOR_ID"),
+			inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID")
+	)
+	private Collection<AddressEntity> addressEntities;
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

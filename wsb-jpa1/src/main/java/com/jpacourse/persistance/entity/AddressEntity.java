@@ -3,25 +3,30 @@ package com.jpacourse.persistance.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "ADDRESS")
 public class AddressEntity {
 
-	@OneToOne(mappedBy = "addressEntity")
-	private DoctorEntity doctorEntity; //dwustronna
-
+	@ManyToMany(mappedBy = "addressEntities")
+	private Collection<DoctorEntity> doctorEntities ;
 
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String city;
 
+	@Column(nullable = false)
 	private String addressLine1;
 
+	@Column(nullable = false)
 	private String addressLine2;
 
+	@Column(nullable = false)
 	private String postalCode;
 
 	public Long getId() {

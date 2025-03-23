@@ -9,20 +9,19 @@ import jakarta.persistence.*;
 @Table(name = "PATIENT")
 public class PatientEntity {
 
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			fetch = FetchType.EAGER
-	)
-	@JoinColumn(name = "PATIENT_ID")
-	private Collection<VisitEntity> visitEntities; //jednostrona od strony rodzica
+	@OneToMany(mappedBy = "patient")
+	private Collection<VisitEntity> visitEntities;
 
-	@OneToOne(
-			cascade =  CascadeType.ALL,
-			fetch = FetchType.LAZY,
-			optional = false
+	@ManyToMany(
+			cascade = CascadeType.ALL, // default: empty
+			fetch = FetchType.LAZY // default: LAZY
 	)
-	@JoinColumn(name = "ADDRESS_ID")
-	private AddressEntity addressEntity;
+	@JoinTable(
+			name = "PATIENT_TO_ADDRESS",
+			joinColumns = @JoinColumn(name = "PATIENT_ID"),
+			inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID")
+	)
+	private Collection<AddressEntity> addressEntities; //jednostronna od strony dziecka
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +43,9 @@ public class PatientEntity {
 
 	@Column(nullable = false)
 	private LocalDate dateOfBirth;
+
+	@Column(nullable = false)
+	private Boolean insured;
 
 	public Long getId() {
 		return id;
@@ -101,4 +103,11 @@ public class PatientEntity {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public Boolean getInsured() {
+		return insured;
+	}
+
+	public void setInsured(Boolean insured) {
+		this.insured = insured;
+	}
 }
