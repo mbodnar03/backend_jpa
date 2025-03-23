@@ -16,13 +16,16 @@ public class PatientEntity {
 	@JoinColumn(name = "PATIENT_ID")
 	private Collection<VisitEntity> visitEntities; //jednostrona od strony rodzica
 
-	@OneToOne(
-			cascade =  CascadeType.ALL,
-			fetch = FetchType.LAZY,
-			optional = false
+	@ManyToMany(
+			cascade = CascadeType.ALL, // default: empty
+			fetch = FetchType.LAZY // default: LAZY
 	)
-	@JoinColumn(name = "ADDRESS_ID")
-	private AddressEntity addressEntity;
+	@JoinTable(
+			name = "PATIENT_TO_ADDRESS",
+			joinColumns = @JoinColumn(name = "PATIENT_ID"),
+			inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID")
+	)
+	private Collection<AddressEntity> addressEntities; //jednostronna od strony dziecka
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

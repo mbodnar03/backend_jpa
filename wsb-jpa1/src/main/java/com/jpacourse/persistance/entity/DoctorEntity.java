@@ -17,9 +17,14 @@ public class DoctorEntity {
 	@JoinColumn(name = "DOCTOR_ID")
 	private Collection<VisitEntity> visitEntities; //jednostronna od strony rodzica
 
-	@OneToOne
-	@JoinColumn(name = "ADDRESS_ID")
-	private AddressEntity addressEntity; //dwustronna
+	@ManyToMany
+	@JoinTable(
+			name = "DOCTOR_TO_ADDRESS",
+			joinColumns = @JoinColumn(name = "DOCTOR_ID"),
+			inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID")
+	)
+	private Collection<AddressEntity> addressEntities;
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
