@@ -2,6 +2,7 @@ package com.jpacourse.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 public class PatientTO implements Serializable
 {
@@ -20,6 +21,8 @@ public class PatientTO implements Serializable
     private LocalDate dateOfBirth;
 
     private Boolean insured;
+
+    private List<VisitTO> visits;
 
     public Long getId() {
         return id;
@@ -83,5 +86,13 @@ public class PatientTO implements Serializable
 
     public void setInsured(Boolean insured) {
         this.insured = insured;
+    }
+
+    public List<VisitTO> getVisits() {
+        return visits;
+    }
+
+    public void setVisits(List<VisitTO> visits) {
+        this.visits = visits;
     }
 }

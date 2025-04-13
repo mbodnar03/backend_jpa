@@ -110,4 +110,12 @@ public class PatientEntity {
 	public void setInsured(Boolean insured) {
 		this.insured = insured;
 	}
+
+	public Collection<VisitEntity> getVisitEntities() {
+		return visitEntities;
+	}
+
+	public void setVisitEntities(Collection<VisitEntity> visitEntities) {
+		this.visitEntities = visitEntities;
+	}
 }
