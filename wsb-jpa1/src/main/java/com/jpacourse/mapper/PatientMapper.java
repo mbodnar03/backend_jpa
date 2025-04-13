@@ -23,6 +23,7 @@ public final class PatientMapper
         patientTO.setPatientNumber(patientEntity.getPatientNumber());
         patientTO.setDateOfBirth(patientEntity.getDateOfBirth());
         patientTO.setInsured(patientEntity.getInsured());
+        patientTO.setVisits(VisitMapper.mapToTOs(patientEntity.getVisitEntities())); //dopisane przez wykladowce
         return patientTO;
     }
 
