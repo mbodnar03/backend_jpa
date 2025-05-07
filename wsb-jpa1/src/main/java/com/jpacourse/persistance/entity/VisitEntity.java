@@ -2,6 +2,7 @@ package com.jpacourse.persistance.entity;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 import jakarta.persistence.*;
 import org.hibernate.FetchMode;
@@ -76,5 +77,13 @@ public class VisitEntity {
 
 	public void setPatient(PatientEntity patient) {
 		this.patient = patient;
+	}
+
+	public Collection<MedicalTreatmentEntity> getMedicalTreatmentEntityCollection() {
+		return medicalTreatmentEntityCollection;
+	}
+
+	public void setMedicalTreatmentEntityCollection(Collection<MedicalTreatmentEntity> medicalTreatmentEntityCollection) {
+		this.medicalTreatmentEntityCollection = medicalTreatmentEntityCollection;
 	}
 }

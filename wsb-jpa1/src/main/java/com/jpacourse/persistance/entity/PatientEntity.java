@@ -1,51 +1,49 @@
 package com.jpacourse.persistance.entity;
 
-import java.time.LocalDate;
-import java.util.Collection;
-
 import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "PATIENT")
+@Table(name = "patient")
 public class PatientEntity {
-
-	@OneToMany(mappedBy = "patient")
-	private Collection<VisitEntity> visitEntities;
-
-	@ManyToMany(
-			cascade = CascadeType.ALL, // default: empty
-			fetch = FetchType.LAZY // default: LAZY
-	)
-	@JoinTable(
-			name = "PATIENT_TO_ADDRESS",
-			joinColumns = @JoinColumn(name = "PATIENT_ID"),
-			inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID")
-	)
-	private Collection<AddressEntity> addressEntities; //jednostronna od strony dziecka
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String firstName;
-
-	@Column(nullable = false)
-	private String lastName;
-
-	@Column(nullable = false)
-	private String telephoneNumber;
-
-	private String email;
-
-	@Column(nullable = false)
+	@Column(name = "patient_number", nullable = false)
 	private String patientNumber;
 
-	@Column(nullable = false)
+	@Column(name = "first_name", nullable = false)
+	private String firstName;
+
+	@Column(name = "last_name", nullable = false)
+	private String lastName;
+
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "telephone_number", nullable = false)
+	private String telephoneNumber;
+
+	@Column(name = "date_of_birth", nullable = false)
 	private LocalDate dateOfBirth;
 
-	@Column(nullable = false)
-	private Boolean insured;
+	@Column(name = "insured", nullable = false)
+	private boolean insured;
+
+	@ManyToMany
+	@JoinTable(
+			name = "patient_to_address",
+			joinColumns = @JoinColumn(name = "patient_id"),
+			inverseJoinColumns = @JoinColumn(name = "address_id")
+	)
+	private List<AddressEntity> addressEntities = new ArrayList<>();
+
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<VisitEntity> visitEntities = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -53,6 +51,14 @@ public class PatientEntity {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getPatientNumber() {
+		return patientNumber;
+	}
+
+	public void setPatientNumber(String patientNumber) {
+		this.patientNumber = patientNumber;
 	}
 
 	public String getFirstName() {
@@ -71,14 +77,6 @@ public class PatientEntity {
 		this.lastName = lastName;
 	}
 
-	public String getTelephoneNumber() {
-		return telephoneNumber;
-	}
-
-	public void setTelephoneNumber(String telephoneNumber) {
-		this.telephoneNumber = telephoneNumber;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -87,12 +85,12 @@ public class PatientEntity {
 		this.email = email;
 	}
 
-	public String getPatientNumber() {
-		return patientNumber;
+	public String getTelephoneNumber() {
+		return telephoneNumber;
 	}
 
-	public void setPatientNumber(String patientNumber) {
-		this.patientNumber = patientNumber;
+	public void setTelephoneNumber(String telephoneNumber) {
+		this.telephoneNumber = telephoneNumber;
 	}
 
 	public LocalDate getDateOfBirth() {
@@ -103,19 +101,27 @@ public class PatientEntity {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public Boolean getInsured() {
+	public boolean isInsured() {
 		return insured;
 	}
 
-	public void setInsured(Boolean insured) {
+	public void setInsured(boolean insured) {
 		this.insured = insured;
 	}
 
-	public Collection<VisitEntity> getVisitEntities() {
+	public List<AddressEntity> getAddressEntities() {
+		return addressEntities;
+	}
+
+	public void setAddressEntities(List<AddressEntity> addressEntities) {
+		this.addressEntities = addressEntities;
+	}
+
+	public List<VisitEntity> getVisitEntities() {
 		return visitEntities;
 	}
 
-	public void setVisitEntities(Collection<VisitEntity> visitEntities) {
+	public void setVisitEntities(List<VisitEntity> visitEntities) {
 		this.visitEntities = visitEntities;
 	}
 }

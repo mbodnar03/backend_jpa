@@ -1,26 +1,22 @@
 package com.jpacourse.persistance.dao.impl;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-
-
 import com.jpacourse.persistance.dao.Dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+import java.util.List;
 
-@Transactional
 public abstract class AbstractDao<T, K extends Serializable> implements Dao<T, K> {
 
 	@PersistenceContext
 	protected EntityManager entityManager;
 
-	private Class<T> domainClass;
+	private final Class<T> entityClass;
+
+	protected AbstractDao(Class<T> entityClass) {
+		this.entityClass = entityClass;
+	}
 
 	@Override
 	public T save(T entity) {
@@ -30,21 +26,17 @@ public abstract class AbstractDao<T, K extends Serializable> implements Dao<T, K
 
 	@Override
 	public T getOne(K id) {
-		return entityManager.getReference(getDomainClass(), id);
+		return entityManager.getReference(entityClass, id);
 	}
 
 	@Override
 	public T findOne(K id) {
-		return entityManager.find(getDomainClass(), id);
+		return entityManager.find(entityClass, id);
 	}
 
 	@Override
 	public List<T> findAll() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> criteriaQuery = builder.createQuery(getDomainClass());
-		criteriaQuery.from(getDomainClass());
-		TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
-		return query.getResultList();
+		return entityManager.createQuery("FROM " + entityClass.getSimpleName(), entityClass).getResultList();
 	}
 
 	@Override
@@ -54,39 +46,29 @@ public abstract class AbstractDao<T, K extends Serializable> implements Dao<T, K
 
 	@Override
 	public void delete(T entity) {
-		entityManager.remove(entity);
+		entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
 	}
 
 	@Override
 	public void delete(K id) {
-		entityManager.remove(getOne(id));
+		T entity = findOne(id);
+		if (entity != null) {
+			delete(entity);
+		}
 	}
 
 	@Override
 	public void deleteAll() {
-		entityManager.createQuery("delete " + getDomainClassName()).executeUpdate();
+		entityManager.createQuery("DELETE FROM " + entityClass.getSimpleName()).executeUpdate();
 	}
 
 	@Override
 	public long count() {
-		return (long) entityManager.createQuery("Select count(*) from " + getDomainClassName()).getSingleResult();
+		return entityManager.createQuery("SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e", Long.class).getSingleResult();
 	}
 
 	@Override
 	public boolean exists(K id) {
 		return findOne(id) != null;
-	}
-
-	@SuppressWarnings("unchecked")
-	protected Class<T> getDomainClass() {
-		if (domainClass == null) {
-			ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
-			domainClass = (Class<T>) type.getActualTypeArguments()[0];
-		}
-		return domainClass;
-	}
-
-	protected String getDomainClassName() {
-		return getDomainClass().getName();
 	}
 }
