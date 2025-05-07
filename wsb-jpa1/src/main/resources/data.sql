@@ -5,10 +5,10 @@ values
   ('parkowa', '3', 'opole', '12-345'),
   ('iglasta', '11', 'opole', '12-345');
 
-insert into patient (date_of_birth, email, first_name, last_name, patient_number, telephone_number, insured)
-values 
-  ('2001-01-01', 'eustachy@enum.pl', 'eustachy', 'enum', '123123', '123456789', false),
-  ('2002-02-02', 'tomek@domek.pl', 'tomasz', 'dom', '321321', '987654321', true);
+insert into patient (date_of_birth, email, first_name, last_name, patient_number, telephone_number, insured, version)
+values
+  ('2001-01-01', 'eustachy@enum.pl', 'eustachy', 'enum', '123123', '123456789', false, 0),
+  ('2002-02-02', 'tomek@domek.pl', 'tomasz', 'dom', '321321', '987654321', true, 0);
 
 insert into doctor (doctor_number, email, first_name, last_name, telephone_number, specialization)
 values 

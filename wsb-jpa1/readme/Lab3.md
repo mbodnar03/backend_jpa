@@ -27,3 +27,7 @@ Nastepnie zmien adnotacje na
 i powtorz test i obserwacje. Wnioski zapisz na dole tego pliku i skomituj.
 
 Do wybranej encji dodaj wersjonowanie, oraz napisz test (w DAO) sprawdzajacy rownolegla modyfikacje (OptimisticLock)
+
+WNIOSKI:
+SELECT - wykonuje osobne zapytania dla kazdej encji (N+1 zaptan),
+JOIN - laczy encje w jednym zapytaniu przez co jest bardziej wydajny przy wielu relacjach

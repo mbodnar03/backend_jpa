@@ -1,6 +1,9 @@
 package com.jpacourse.persistance.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +11,18 @@ import java.util.List;
 @Entity
 @Table(name = "patient")
 public class PatientEntity {
+
+	@ManyToMany
+	@JoinTable(
+			name = "patient_to_address",
+			joinColumns = @JoinColumn(name = "patient_id"),
+			inverseJoinColumns = @JoinColumn(name = "address_id")
+	)
+	private List<AddressEntity> addressEntities = new ArrayList<>();
+
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.JOIN)
+	private List<VisitEntity> visitEntities = new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,16 +49,9 @@ public class PatientEntity {
 	@Column(name = "insured", nullable = false)
 	private boolean insured;
 
-	@ManyToMany
-	@JoinTable(
-			name = "patient_to_address",
-			joinColumns = @JoinColumn(name = "patient_id"),
-			inverseJoinColumns = @JoinColumn(name = "address_id")
-	)
-	private List<AddressEntity> addressEntities = new ArrayList<>();
-
-	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<VisitEntity> visitEntities = new ArrayList<>();
+	@Version
+	@Column(name = "version")
+	private int version;
 
 	public Long getId() {
 		return id;
@@ -123,5 +131,13 @@ public class PatientEntity {
 
 	public void setVisitEntities(List<VisitEntity> visitEntities) {
 		this.visitEntities = visitEntities;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 }
